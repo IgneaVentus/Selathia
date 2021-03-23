@@ -1,0 +1,238 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    display: flex;
+    background-color: rgb(50,50,50);
+}
+
+#maplock {
+    position: absolute;
+    display: none;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 2;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#map {
+    border: none;
+    height: 100%;
+    width: auto;
+    padding: 0;
+    display: block;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+#mapSidePanel {
+    right: 0px;
+    width: calc(30% - 10px);
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background-color: rgb(60,60,60);
+    display: flex;
+    flex-flow: column wrap;
+    border-color: black;
+    border-style: solid;
+    border-width: 0 5px 0 5px;
+}
+
+#mapSidePanel > .navPanel, #mapSidePanel > .coords {
+    flex-flow: row wrap;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0;
+}
+
+#mapSidePanel > .coords > h2 {
+    color: orange;
+    margin: 15px 0 5px 0;
+}
+
+#mapSidePanel > button {
+    height: 2em;
+    padding: 0.2em 0;
+    margin: 1rem;
+    background-color: rgb(150, 100, 0);
+    color: black;
+    font-size: larger;
+    border-radius: 10px;
+}
+
+#mapSidePanel > .navPanel > a, #mapSidePanel > .coords > p {
+    width: calc(50% - 2px);
+    height: 1.5em;
+    background-color: black;
+    color: silver;
+    font-size: large;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.5em 0 0 0;
+    margin: 0;
+    border-color: silver;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#mapSidePanel > .navPanel > a:first-of-type, #mapSidePanel > .coords > p:first-of-type {
+    border-left: 0px;
+    width: calc(50% - 1px);
+}
+#mapSidePanel > .navPanel > a:last-of-type, #mapSidePanel > .coords > p:last-of-type {
+    border-right: 0px;
+    width: calc(50% - 1px);
+}
+
+#modal {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 30vw;
+    background: rgb(60,60,60);
+    color: silver;
+    z-index: 3;
+    box-sizing: border-box;
+    height: max-content;
+    border-radius: 10px;
+}
+
+#modal > div:first-child {
+    border-top: 3px black solid;
+    border-left: 3px black solid;
+    border-right: 3px black solid;
+    border-radius: 10px 10px 0 0;
+}
+#modal > div:last-child {
+    border-bottom: 3px black solid;
+    border-left: 3px black solid;
+    border-right: 3px black solid;
+    border-radius: 0 0 10px 10px;
+}
+
+#modal > .top {
+    background: rgb(40,40,40);
+    max-height: 30%;
+    height: 60px;
+    width: 100%;
+    margin: 0;
+    padding: 1em;
+    border-bottom: 1px silver solid;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+#modal > .top > .header {
+    margin: 0;
+    padding: 0;
+    font-size: large;
+    font-weight: bold;
+}
+
+#modal > .top > button {
+    font-weight: bolder;
+    font-size: larger;
+    color: silver;
+    background-color: rgba(0,0,0,0);
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+#modal > .mid {
+    padding: 2rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    border-color:black;
+    border-style: solid;
+    border-width: 0 3px;
+    box-sizing: border-box;
+    height: fit-content;
+}
+
+
+#modal .small-text {
+    font-size: small;
+}
+
+#modal input {
+    width: 70%;
+    height: 2em;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#modal textarea {
+    width: 70%;
+    resize: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 5px 0 0 0;
+}
+
+#modal label {
+    display: inline-block;
+    width: 30%;
+    box-sizing: border-box;
+}
+
+#modal .data {
+    width: 100%;
+    justify-content: flex-end !important;
+    text-align: center;
+}
+
+#modal .data > input {
+    width: 35%;
+}
+
+#modal input[type=submit] {
+    width: 100%;
+    height: 2em;
+    margin: 10px 0 0 0 ;
+    background-color:rgb(150, 100, 0);
+    color: black;
+    font-size: large;
+}
+
+#pointer {
+    display: none;
+    object-fit: cover;
+    overflow: visible;
+    z-index: 1;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.location {
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    border: 1px silver solid;
+    position: absolute;
+}
+
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+}

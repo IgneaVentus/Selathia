@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/map.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/modal.js"></script>
+    </head>
+    <body>
+        <div id="maplock"></div>
+            <img id="map" src="./images/Selathia.jpg" draggable="false"></img>
+        <div id="mapSidePanel">
+            <!-- <div class="navPanel">
+                <a href="#">Nawigacja</a>
+                <a href="#">Edycja</a>
+            </div> -->
+            <div class="coords">
+                <h2>Wybrane Koordynaty</h2>
+                <p id="coordX"></p>
+                <p id="coordY"></p>
+            </div>
+            <button id="locCreate">Utwórz nową lokację</button>
+            <button id="locModify">Edytuj wybraną lokację</button>
+            <button id="locRemove">Usuń wybraną lokację</button>
+        </div>
+        <div id="modal">
+            <div class="top">
+                <p class='header'>To jest nagłówek.</p>
+                <button onclick='$("#modal").hide(); $("#maplock").hide();'>x</button>
+            </div>
+            <div class="mid">
+                Jakaś tam treścia.
+            </div>
+        </div>
+        <img src="./images/cross.png" id="pointer"></div>
+    </body>
+</html>
