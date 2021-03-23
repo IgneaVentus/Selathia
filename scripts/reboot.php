@@ -57,7 +57,7 @@
             "CREATE TABLE languages (
                 id integer primary key,
                 name text not null unique,
-                desc text
+                desc text not null
             );"
         );
         //List of both negative and positive perks
@@ -148,6 +148,17 @@
                 name text not null unique,
                 desc_id integer not null unique,
                 FOREIGN KEY (desc_id) REFERENCES descriptions (id)  ON UPDATE CASCADE ON DELETE RESTRICT
+            );"
+        );
+        //List of events
+        $conn->exec(
+            "CREATE TABLE events (
+                id integer primary key,
+                name text not null unique,
+                location_id integer,
+                desc_id integer not null unique,
+                FOREIGN KEY (location_id) REFERENCES mapLocations (id) ON UPDATE CASCADE ON DELETE SET NULL,
+                FOREIGN KEY (desc_id) REFERENCES descriptions (id) ON UPDATE CASCADE ON DELETE SET NULL
             );"
         );
         //List of existing kingdoms
