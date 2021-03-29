@@ -6,10 +6,21 @@
     $user='sysadm';
     $pass='gtf0mate';
     try { 
-        $conn = new PDO('sqlite:./db/central', $user, $pass);
+        $conn = new PDO('sqlite:../db/central', $user, $pass);
     }
     catch (Exception $e) {
         die("Unable to connect: ".$e->getMessage());
+    }
+
+    // Prepare data for processing
+    function prepare($data) {
+        // Remove all saboteurs from data
+        $predone = preg_replace("/[\[\]\*\{\}\(\)\+\|\^\&\.\\\?<>'\"]/s", "", $data);
+        // Remove whitespaces
+        $done = preg_replace("/\s{2,}/s", " ", $predone);
+        
+        // Explode and return data for further processing
+        return explode("!", trim($done));
     }
 
     // New description pair insertion
@@ -274,10 +285,15 @@
         return ($conn->lastInsertId());
     }
 
-    $data = $_POST["data"];
-
-    var_dump($data);
-    print_r(count($data));
+    // Load and prepare data
+    try {
+        //Check if data exists, if not, throw exception
+        if(isset($_GET["data"])) $data = prepare($_GET["data"]);
+        else throw new Exception("There's no data to process.");
+    }
+    catch (Exception $e) {
+        print_r($e->getMessage());
+    }
 
     try {
         $conn->beginTransaction();
@@ -286,34 +302,37 @@
         if ($data[0]==0 && count($data)==5) $retid = insertMap($data[1], $data[2], $data[3], $data[4]);
 
         // 1 => God. 1 - name, 2 - domain, 3 - shortdesc, 4 - longdesc
-        if ($data[0]==1 && count($data)==5) $retid = insertGod($data[1], $data[2], insertDesc($data[3], $data[4]));
+        else if ($data[0]==1 && count($data)==5) $retid = insertGod($data[1], $data[2], insertDesc($data[3], $data[4]));
 
         // 2 => Language. 1 - name, 2 - desc
-        if ($data[0]==2 && count($data)==3) $retid = insertLang($data[1], $data[2]);
+        else if ($data[0]==2 && count($data)==3) $retid = insertLang($data[1], $data[2]);
 
         // 3 => Culture. 1 - name, 2 - shortdesc, 3 - longdesc
-        if ($data[0]==3 && count($data)==4) $retid = insertCulture($data[1], insertDesc($data[2], $data[3]));
+        else if ($data[0]==3 && count($data)==4) $retid = insertCulture($data[1], insertDesc($data[2], $data[3]));
 
         // 4 => Architecture style. 1 - name, 2 - shortdesc, 3 - longdesc
-        if ($data[0]==4 && count($data)==4) $retid = insertArchitecture($data[1], insertDesc($data[2], $data[3]));
+        else if ($data[0]==4 && count($data)==4) $retid = insertArchitecture($data[1], insertDesc($data[2], $data[3]));
 
         // 5 => Race. 1 - name, 2 - shortdesc, 3 - longdesc
-        if ($data[0]==5 && count($data)==4) $retid = insertRace($data[1], insertDesc($data[2], $data[3]));
+        else if ($data[0]==5 && count($data)==4) $retid = insertRace($data[1], insertDesc($data[2], $data[3]));
 
         // 6 => Perk. 1 - name, 2 - desc, 3 - is_positive
-        if ($data[0]==6 && count($data)==4) $retid = insertPerk($data[1], $data[2], $data[3]);
+        else if ($data[0]==6 && count($data)==4) $retid = insertPerk($data[1], $data[2], $data[3]);
 
         // 7 => Land. 1 - name, 2 - path, 3 - shortdesc, 4-longdesc
-        if ($data[0]==7 && count($data)==5) $retid = insertLand($data[1], $data[2], insertDesc($data[3], $data[4]));
+        else if ($data[0]==7 && count($data)==5) $retid = insertLand($data[1], $data[2], insertDesc($data[3], $data[4]));
 
         // 8 => Event. 1 - name, 2 - posX, 3 - posY, 4 - posZ, 5 - map_id, 6 - shortdesc, 7 - longdesc
-        if ($data[0]==8 && count($data)==8) $retid = insertEvent($data[1],insertMap($data[2],$data[3],$data[4],$data[5]),insertDesc($data[6],$data[7]));
+        else if ($data[0]==8 && count($data)==8) $retid = insertEvent($data[1],insertMap($data[2],$data[3],$data[4],$data[5]),insertDesc($data[6],$data[7]));
 
         // 9 => Kingdom. 1 - name, 2 - ruler, 3 - type, 4 - shortdesc, 5 - longdesc, 6 - culture_id
-        if ($data[0]==9 && count($data)==7) $retid = insertKingdom($data[1], $data[2], $data[3], insertDesc($data[4], $data[5]), $data[6]);
+        else if ($data[0]==9 && count($data)==7) $retid = insertKingdom($data[1], $data[2], $data[3], insertDesc($data[4], $data[5]), $data[6]);
 
         // 10 => Person. 1 - name, 2 - age, 3 - title, 4 - race_id, 5 - shortdesc, 6 - longdesc, 7 - culture_id
-        if ($data[0]==10 && count($data)==8) $retid = insertPerson($data[1], $data[2], $data[3], $data[4], insertDesc($data[5], $data[6]), $data[7]);
+        else if ($data[0]==10 && count($data)==8) $retid = insertPerson($data[1], $data[2], $data[3], $data[4], insertDesc($data[5], $data[6]), $data[7]);
+
+        // If nothing fits, given data is erronous. Throw error.
+        else throw new Exception ("Błąd: Argumenty nie pasują do żadnego warunku.");
 
         $conn->commit();
 

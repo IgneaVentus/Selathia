@@ -8,7 +8,7 @@
 
     //Create or connect to database 
     try { 
-        $conn = new PDO('sqlite:./db/central', $user, $pass);
+        $conn = new PDO('sqlite:../db/central', $user, $pass);
         print_r("\nConnection estabilished.");
     }
     catch (Exception $e) {

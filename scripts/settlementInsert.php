@@ -6,10 +6,21 @@
     $user='sysadm';
     $pass='gtf0mate';
     try { 
-        $conn = new PDO('sqlite:./db/central', $user, $pass);
+        $conn = new PDO('sqlite:../db/central', $user, $pass);
     }
     catch (Exception $e) {
         die("Unable to connect: ".$e->getMessage());
+    }
+
+    // Prepare data for processing
+    function prepare($data) {
+        // Remove all saboteurs from data
+        $predone = preg_replace("/[\[\]\*\{\}\(\)\+\|\^\&\.\\/?<>'\"]/s", "", $data);
+        // Remove whitespaces
+        $done = preg_replace("/\s{2,}/s", " ", $predone);
+        
+        // Explode and return data for further processing
+        return explode("!", trim($done));
     }
 
     function insertLocation($posX, $posY, $posZ) {
@@ -75,11 +86,16 @@
         return ($conn->lastInsertId());
     }
 
-    // Load data
-    $data = $_POST["data"];
+    // Load and prepare data
+    try {
+        //Check if data exists, if not, throw exception
+        if(isset($_GET["data"])) list($name, $ruler_id, $type, $url, $land_id, $shortdesc, $longdesc, $kingdom_id, $culture_id, $architecture_id, $posX, $posY, $posZ) = prepare($_GET["data"]);
+        else throw new Exception("There's no data to process.");
 
-    // Prepare data
-    list($name, $ruler_id, $type, $url, $land_id, $shortdesc, $longdesc, $kingdom_id, $culture_id, $architecture_id, $posX, $posY, $posZ) = explode("!", $data);
+    }
+    catch (Exception $e) {
+        print_r($e->getMessage());
+    }
 
     try {
         $conn->beginTransaction();
