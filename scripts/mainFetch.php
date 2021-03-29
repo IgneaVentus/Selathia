@@ -70,7 +70,7 @@
             }
 
             // Bind (if required) WHERE arguments
-            if ($data[2]!=0) {
+            if (!$data[2]==0) {
                 $select=$select." WHERE ".$data[2];
                 $select=$select." = ".$data[3];
             }
