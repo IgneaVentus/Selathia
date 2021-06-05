@@ -8,7 +8,7 @@
 
     //Create or connect to database 
     try { 
-        $conn = new PDO('sqlite:../db/central', $user, $pass);
+        $conn = new PDO('sqlite:../db/central.db', $user, $pass);
         print_r("\nConnection estabilished.");
     }
     catch (Exception $e) {
@@ -57,7 +57,8 @@
             "CREATE TABLE languages (
                 id integer primary key,
                 name text not null unique,
-                desc text not null
+                desc_id integer not null,
+                FOREIGN KEY (desc_id) REFERENCES descriptions (id) ON UPDATE CASCADE ON DELETE SET NULL
             );"
         );
         //List of both negative and positive perks

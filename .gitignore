@@ -1,3 +1,4 @@
-**.vscode
-db
-test.*
+/.vscode
+/db
+test*
+/design notes

@@ -284,6 +284,32 @@
         // Return ID of inserted row
         return ($conn->lastInsertId());
     }
+    
+    // New settlement insertion
+    function insertSettlement ($name, $ruler_id, $type, $land_id, $desc_id, $location_id, $kingdom_id, $culture_id, $architecture_id) {
+        global $conn;
+
+        // Prepare statement
+        $insert = "INSERT INTO settlements (name, ruler_id, type, land_id, desc_id, location_id, kingdom_id, culture_id, architecture_id) VALUES (?,?,?,?,?,?,?,?,?)";
+        $stmt = $conn->prepare($insert);
+
+        // Bind values
+        if(!$stmt->bindValue(1, $name, PDO::PARAM_STR)) throw new Exception("Error during inserting person on first bind.");
+        if(!$stmt->bindValue(2, $ruler_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on second bind.");
+        if(!$stmt->bindValue(3, $type, PDO::PARAM_STR)) throw new Exception("Error during inserting person on third bind.");
+        if(!$stmt->bindValue(4, $land_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on fourth bind.");
+        if(!$stmt->bindValue(5, $desc_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on fifth bind.");
+        if(!$stmt->bindValue(6, $location_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on sixth bind.");
+        if(!$stmt->bindValue(7, $kingdom_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on seventh bind.");
+        if(!$stmt->bindValue(8, $culture_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on eight bind.");
+        if(!$stmt->bindValue(9, $architecture_id, PDO::PARAM_INT)) throw new Exception("Error during inserting person on ninth bind.");
+
+        // Execute statement
+        if(!$stmt->execute()) throw new Exception("Error during inserting person on execution");
+
+        // Return ID of inserted row
+        return ($conn->lastInsertId());
+    }
 
     // Load and prepare data
     try {
@@ -330,6 +356,9 @@
 
         // 10 => Person. 1 - name, 2 - age, 3 - title, 4 - race_id, 5 - shortdesc, 6 - longdesc, 7 - culture_id
         else if ($data[0]==10 && count($data)==8) $retid = insertPerson($data[1], $data[2], $data[3], $data[4], insertDesc($data[5], $data[6]), $data[7]);
+
+        // 11 => Settlement. 1 - name, 2 - ruler_id, 3 - type, 4 - land_id, 5 - shortdesc, 6 - longdesc, 7 - location_id, 8-kingdom_id, 9 - culture_id, 10 architecture_id
+        else if ($data[0]==10 && count($data)==8) $retid = insertSettlement($data[1], $data[2], $data[3], $data[4], insertDesc($data[5], $data[6]), $data[7], $data[8], $data[9], $data[10]);
 
         // If nothing fits, given data is erronous. Throw error.
         else throw new Exception ("Błąd: Argumenty nie pasują do żadnego warunku.");
