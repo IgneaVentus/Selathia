@@ -1,4 +1,5 @@
 # Selathia
-Page created for my own universe. Still refusing to use any framework.
+Page created for my own universe.
 
-[Trello](https://trello.com/b/hYo8Vf0w/selathia)
+Written from the ground up, mostly to keep me from forgetting how to code now that I don't have that much time to fiddle around. A little pet project if you will.
+And definitely nothing interesting.
